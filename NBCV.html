@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大學生自主學習知識網 - 啾讀知識庫</title>
+    <style>
+        /* CSS 變數與基礎重設 */
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --border-color: #e5e7eb;
+            --text-muted: #6b7280;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f3f4f6;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 主視覺區 */
+        .hero {
+            background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+        }
+
+        /* 搜尋框樣式 */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            padding-right: 3.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        /* 主要內容排版 */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 0.75rem;
+            color: var(--dark-color);
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 15%;
+            height: 70%;
+            width: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* 資源庫卡片網格 */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .resource-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .badge-tech { background-color: #e0e7ff; color: #4338ca; }
+        .badge-esport { background-color: #fef3c7; color: #d97706; }
+        .badge-finance { background-color: #d1fae5; color: #059669; }
+
+        .card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--dark-color);
+        }
+
+        .card-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.75rem;
+            margin-top: auto;
+        }
+
+        /* FAQ 手風琴樣式 */
+        .faq-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 4rem;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .faq-header:hover {
+            color: var(--primary-color);
+            background-color: var(--light-color);
+        }
+
+        .faq-icon {
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+            background-color: var(--light-color);
+        }
+
+        .faq-content-inner {
+            padding: 1.25rem;
+            color: #4b5563;
+            font-size: 1rem;
+            border-top: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 1000px;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180px);
+            color: var(--primary-color);
+        }
+
+        /* 查無結果提示 */
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            color: var(--text-muted);
+            display: none;
+        }
+
+        /* 頁腳 */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+
+        /* RWD 響應式斷點設計 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .resources-grid { grid-template-columns: 1fr; }
+            .nav-container { padding: 1rem; }
+            main { padding: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">⚡ 大學生自主學習知識庫</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>擴充你的大學核心思維</h1>
+        <p>整合前沿科技創新、現代數位技能、與高效投資心法，打造全方位學生競爭力。</p>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="輸入關鍵字搜尋 FAQ 或知識資源（如：CUDA、Excel、投資）...">
+            <span class="search-icon">🔍</span>
+        </div>
+    </section>
+
+    <main>
+        
+        <div id="noResults" class="no-results">
+            <h3>找不到相符的內容</h3>
+            <p>嘗試更換關鍵字，例如「輝達」、「Excel」、「指標」或「策略」。</p>
+        </div>
+
+        <section id="resourcesSection">
+            <h2 class="section-title">精選自主學習資源庫</h2>
+            <div class="resources-grid">
+                
+                <div class="resource-card" data-keywords="nvidia 輝達 黃仁勳 科技創新 晶片 創業 科技 科技創新開發架構">
+                    <div class="card-body">
+                        <span class="card-badge badge-tech">科技創新</span>
+                        <h3 class="card-title">Nvidia 的瘋狂成長之路與 CUDA 架構</h3>
+                        <p class="card-text">探討黃仁勳如何將 Nvidia 從 3 人小公司帶領成為 AI 晶片霸主。核心重點在於 2006 年推出的統一計算架構 CUDA，這項基礎技術打破了 GPU 僅能處理圖形限制，成功開啟通用計算（GPGPU）新時代，並在 2012 年 ImageNet 競賽中大放異彩。</p>
+                        <div class="card-meta">來源：精選導讀《輝達之道》</div>
+                    </div>
+                </div>
+
+                <div class="resource-card" data-keywords="excel 電競 數位技能 數據處理 競賽 技能 fmwc 大賽 規則 關卡">
+                    <div class="card-body">
+                        <span class="card-badge badge-esport">數位技能</span>
+                        <h3 class="card-title">Excel 世界大賽與資料處理電競化</h3>
+                        <p class="card-text">顛覆傳統思維！商務辦公軟體 Excel 已轉化為全球頂尖電競大賽（FMWC）。選手必須在極高壓的時間內（如 30 分鐘內解決 6 個複雜層級的問題），靈活運用各式公式與邏輯解題，展現神級資料分析實力。</p>
+                        <div class="card-meta">來源：數位趨勢《神扯電玩》</div>
+                    </div>
+                </div>
+
+                <div class="resource-card" data-keywords="投資 股票 財經 roic 複利 策略 財務指標 資產 報酬率 爛蘋果">
+                    <div class="card-body">
+                        <span class="card-badge badge-finance">財經投資</span>
+                        <h3 class="card-title">別再看股價！全面改看核心指標 ROIC</h3>
+                        <p class="card-text">專為不想天天盯盤的投資者設計。書中強調主動選股的關鍵不是追逐短期股價波段，而是檢視「投入資本回報率 (ROIC)」。透過每季調整一次部位（一年四次），嚴格淘汰「爛蘋果」企業，達成資產的長期複利成長。</p>
+                        <div class="card-meta">來源：經典財務《別再看股價了》</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="faqSection">
+            <h2 class="section-title">自主學習 FAQ 常見問題</h2>
+            <div class="faq-container">
+                
+                <div class="faq-item" data-keywords="cuda nvidia 黃仁勳 什麼是 核心 技術 顯示卡 通用計算">
+                    <button class="faq-header">
+                        <span>Q1: 什麼是 CUDA？它對 Nvidia 成為 AI 霸主有何關鍵影響？</span>
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            <strong>CUDA (統一計算架構)</strong> 是 Nvidia 於 2006 年推出的核心基礎技術。它允許科學家與工程師直接利用 GPU 的強大並行運算能力來處理圖形以外的「通用計算」(GPGPU)。黃仁勳不惜重金與全美頂尖大學合作提供硬體，使其成為行業標準。這項長遠的投資在 2012 年人工智慧 AlexNet 採用其進行 AI 訓練時正式開花結果，奠定了如今的 AI 霸主地位。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-keywords="excel 世界大賽 規則 怎麼比 級別 參賽 資格 時間 題目">
+                    <button class="faq-header">
+                        <span>Q2: Excel 世界大賽是怎麼進行的？大學生如何獲得參賽資格？</span>
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            Excel 世界大賽決賽於拉斯維加斯舉辦，主要有兩種管道獲取入場券：一是參加官方舉辦的 9 場線上競賽（Road to Vegas），每場前 10 名入選；二是透過 Financial Modeling World Cup (FMWC) 歷史積分。比賽中會提供極度複雜、分層級（Level 1 至 Level 6+）的案例文件，考驗選手在時限內運用進階公式解題的能力。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-keywords="roic 財務指標 選股 投資 盯盤 複利 策略 資本回報率">
+                    <button class="faq-header">
+                        <span>Q3: 為什麼《別再看股價了》提倡看 ROIC 而非股價？</span>
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            因為股價容易受到短期市場情緒與新聞雜訊干擾，而 <strong>ROIC (投入資本回報率)</strong> 才能真實反映一家企業運營賺錢的本質效率。書中的主動選股哲學主張：大學生不需要每天盯盤，只要大約「每一季度（一年四次）」進行一次投資部位調整，根據指標挑出並淘汰表現不佳的「爛蘋果」，就能穩定享受長期複利。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-keywords="萬用指標 roic 缺點 微軟 股價 策略 堅定執行">
+                    <button class="faq-header">
+                        <span>Q4: 投資市場上是否存在「萬用指標」？如果 ROIC 下跌但股價上漲該怎麼辦？</span>
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            書中明確指出，<strong>世界上沒有任何一套指標是萬用的</strong>。例如微軟在 2014 年到 2019 年期間，ROIC 持續滑落甚至與 WACC 交叉，但股價依然在上漲。投資的重點在於「建立一套好的策略並堅定執行它」。核心指導原則是「寧可錯過一顆好蘋果，也絕不能讓任何一顆爛蘋果進入部位」，維持投資組合的純淨度。
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 大學生自主學習知識庫. Built for Learning & Innovation.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. FAQ 手風琴摺疊互動邏輯 ---
+            const faqHeaders = document.querySelectorAll('.faq-header');
+            
+            faqHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const currentItem = header.parentElement;
+                    const isOpen = currentItem.classList.contains('active');
+                    
+                    // 關閉其他已打開的 FAQ（可選，若想允許同時打開多個可註解此段）
+                    document.querySelectorAll('.faq-item').forEach(item => {
+                        item.classList.remove('active');
+                        item.querySelector('.faq-content').style.maxHeight = null;
+                        item.querySelector('.faq-icon').textContent = '▼';
+                    });
+                    
+                    // 切換當前點擊的 FAQ 狀態
+                    if (!isOpen) {
+                        currentItem.classList.add('active');
+                        const content = currentItem.querySelector('.faq-content');
+                        // 動態計算並賦予高度以觸發平滑動畫
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        currentItem.querySelector('.faq-icon').textContent = '▲';
+                    }
+                });
+            });
+
+
+            // --- 2. 即時前端搜尋過濾邏輯 ---
+            const searchInput = document.getElementById('searchInput');
+            const resourceCards = document.querySelectorAll('.resource-card');
+            const faqItems = document.querySelectorAll('.faq-item');
+            const noResults = document.getElementById('noResults');
+            const resourcesSection = document.getElementById('resourcesSection');
+            const faqSection = document.getElementById('faqSection');
+
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                let visibleCardsCount = 0;
+                let visibleFaqsCount = 0;
+
+                // 若搜尋框為空，顯示所有內容並恢復預設外觀
+                if (query === '') {
+                    resourceCards.forEach(card => card.style.display = 'flex');
+                    faqItems.forEach(item => {
+                        item.style.display = 'block';
+                        // 恢復原先摺疊狀態
+                        item.classList.remove('active');
+                        item.querySelector('.faq-content').style.maxHeight = null;
+                        item.querySelector('.faq-icon').textContent = '▼';
+                    });
+                    noResults.style.display = 'none';
+                    resourcesSection.style.display = 'block';
+                    faqSection.style.display = 'block';
+                    return;
+                }
+
+                // 過濾精選資源庫卡片
+                resourceCards.forEach(card => {
+                    const title = card.querySelector('.card-title').textContent.toLowerCase();
+                    const text = card.querySelector('.card-text').textContent.toLowerCase();
+                    const keywords = card.getAttribute('data-keywords').toLowerCase();
+                    
+                    if (title.includes(query) || text.includes(query) || keywords.includes(query)) {
+                        card.style.display = 'flex';
+                        visibleCardsCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 過濾 FAQ 項目
+                faqItems.forEach(item => {
+                    const headerText = item.querySelector('.faq-header span').textContent.toLowerCase();
+                    const contentText = item.querySelector('.faq-content-inner').textContent.toLowerCase();
+                    const keywords = item.getAttribute('data-keywords').toLowerCase();
+
+                    if (headerText.includes(query) || contentText.includes(query) || keywords.includes(query)) {
+                        item.style.display = 'block';
+                        visibleFaqsCount++;
+                        
+                        // 自動展開符合搜尋條件的 FAQ
+                        item.classList.add('active');
+                        const content = item.querySelector('.faq-content');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        item.querySelector('.faq-icon').textContent = '▲';
+                    } else {
+                        item.style.display = 'none';
+                        item.classList.remove('active');
+                        item.querySelector('.faq-content').style.maxHeight = null;
+                    }
+                });
+
+                // 判斷是否顯示個別區塊或「查無結果」提示
+                resourcesSection.style.display = visibleCardsCount > 0 ? 'block' : 'none';
+                faqSection.style.display = visibleFaqsCount > 0 ? 'block' : 'none';
+
+                if (visibleCardsCount === 0 && visibleFaqsCount === 0) {
+                    noResults.style.display = 'block';
+                } else {
+                    noResults.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
