@@ -1,530 +1,630 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大學生自主學習知識網 - 啾讀知識庫</title>
-    <style>
-        /* CSS 變數與基礎重設 */
-        :root {
-            --primary-color: #4f46e5;
-            --primary-hover: #4338ca;
-            --secondary-color: #10b981;
-            --dark-color: #1f2937;
-            --light-color: #f9fafb;
-            --border-color: #e5e7eb;
-            --text-muted: #6b7280;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
-
-        body {
-            background-color: #f3f4f6;
-            color: var(--dark-color);
-            line-height: 1.6;
-        }
-
-        /* 導覽列 */
-        header {
-            background-color: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* 主視覺區 */
-        .hero {
-            background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
-            color: white;
-            text-align: center;
-            padding: 4rem 2rem;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto 2rem auto;
-        }
-
-        /* 搜尋框樣式 */
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            padding-right: 3.5rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .search-input:focus {
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 1.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            pointer-events: none;
-        }
-
-        /* 主要內容排版 */
-        main {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-left: 0.75rem;
-            color: var(--dark-color);
-        }
-
-        .section-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 15%;
-            height: 70%;
-            width: 4px;
-            background-color: var(--primary-color);
-            border-radius: 2px;
-        }
-
-        /* 資源庫卡片網格 */
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .resource-card {
-            background-color: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .resource-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .badge-tech { background-color: #e0e7ff; color: #4338ca; }
-        .badge-esport { background-color: #fef3c7; color: #d97706; }
-        .badge-finance { background-color: #d1fae5; color: #059669; }
-
-        .card-body {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-            color: var(--dark-color);
-        }
-
-        .card-text {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-        }
-
-        .card-meta {
-            font-size: 0.85rem;
-            color: #9ca3af;
-            border-top: 1px solid var(--border-color);
-            padding-top: 0.75rem;
-            margin-top: auto;
-        }
-
-        /* FAQ 手風琴樣式 */
-        .faq-container {
-            background-color: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 4rem;
-        }
-
-        .faq-item {
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-
-        .faq-header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.25rem 1rem;
-            background: none;
-            border: none;
-            text-align: left;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--dark-color);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .faq-header:hover {
-            color: var(--primary-color);
-            background-color: var(--light-color);
-        }
-
-        .faq-icon {
-            font-size: 1.2rem;
-            transition: var(--transition);
-        }
-
-        .faq-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
-            background-color: var(--light-color);
-        }
-
-        .faq-content-inner {
-            padding: 1.25rem;
-            color: #4b5563;
-            font-size: 1rem;
-            border-top: 1px solid rgba(0,0,0,0.02);
-        }
-
-        .faq-item.active .faq-content {
-            max-height: 1000px;
-            transition: max-height 0.5s ease-in-out;
-        }
-
-        .faq-item.active .faq-icon {
-            transform: rotate(180px);
-            color: var(--primary-color);
-        }
-
-        /* 查無結果提示 */
-        .no-results {
-            text-align: center;
-            padding: 3rem;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            color: var(--text-muted);
-            display: none;
-        }
-
-        /* 頁腳 */
-        footer {
-            background-color: var(--dark-color);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-            font-size: 0.9rem;
-        }
-
-        /* RWD 響應式斷點設計 */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .resources-grid { grid-template-columns: 1fr; }
-            .nav-container { padding: 1rem; }
-            main { padding: 0 1rem; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 大學生成長指南：AI 時代的超級學習與求職決策知識庫</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: rgba(99, 102, 241, 0.3);
+      border-radius: 3px;
+    }
+    .gradient-hero {
+      background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent), 
+                  radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.15), transparent),
+                  #0f172a;
+    }
+  </style>
 </head>
-<body>
+<body class="bg-[#f8fafc] text-slate-800 transition-colors duration-300 min-h-screen flex flex-col">
 
-    <header>
-        <div class="nav-container">
-            <a href="#" class="logo">⚡ 大學生自主學習知識庫</a>
+  <!-- 頂部導覽列 -->
+  <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur text-white border-b border-slate-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="bg-gradient-to-tr from-indigo-500 to-violet-500 p-2 rounded-xl text-white shadow-md shadow-indigo-500/20">
+          <i class="fa-solid fa-graduation-cap text-xl"></i>
         </div>
-    </header>
-
-    <section class="hero">
-        <h1>擴充你的大學核心思維</h1>
-        <p>整合前沿科技創新、現代數位技能、與高效投資心法，打造全方位學生競爭力。</p>
-        <div class="search-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="輸入關鍵字搜尋 FAQ 或知識資源（如：CUDA、Excel、投資）...">
-            <span class="search-icon">🔍</span>
+        <div>
+          <span class="font-black text-lg tracking-wider bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">CAMPUS AI</span>
+          <span class="text-[10px] block text-slate-400 tracking-widest uppercase">2026 大學生決策知識庫</span>
         </div>
-    </section>
+      </div>
+      <nav class="hidden md:flex space-x-8 text-sm font-semibold text-slate-300">
+        <a href="#resources" class="hover:text-indigo-400 transition-colors">學習與求職資源</a>
+        <a href="#faq" class="hover:text-indigo-400 transition-colors">解惑 FAQ</a>
+        <a href="#assessment" class="hover:text-indigo-400 transition-colors">競爭力診斷</a>
+      </nav>
+      <div class="flex items-center space-x-2">
+        <span class="bg-indigo-500/10 text-indigo-300 text-xs px-3 py-1 rounded-full border border-indigo-500/20 font-bold">
+          校園青年限定版
+        </span>
+      </div>
+    </div>
+  </header>
 
-    <main>
+  <!-- 主視覺區域 -->
+  <section class="gradient-hero text-white py-14 px-4 sm:px-6 lg:px-8 shadow-inner relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('https://tailwindui.com/img/grid-neon.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-20"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <div class="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-400/30 rounded-full px-4 py-1.5 mb-4 text-xs font-semibold text-indigo-300 shadow-inner">
+        <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>教育部 2026 戰略規劃：47 所國立大學「館館有 AI」全面啟動</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight bg-gradient-to-r from-white via-indigo-100 to-indigo-200 bg-clip-text text-transparent">
+        寫程式已經被 AI 解完了！<br class="hidden sm:inline">大學生如何成為 10 倍速「超級工作者」？
+      </h1>
+      <p class="text-sm sm:text-base text-slate-400 mb-8 max-w-2xl mx-auto font-medium">
+        專為大學生設計！獨家提煉 2025-2026 年最新「駕馭工程 (Harness)」、教授創業課、超級學習法與起薪風向，助你無縫接軌未來高價值職涯！
+      </p>
+
+      <!-- 搜尋框區塊 -->
+      <div class="max-w-xl mx-auto relative shadow-2xl rounded-full">
+        <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+          <i class="fa-solid fa-magnifying-glass text-indigo-400"></i>
+        </div>
+        <input 
+          type="text" 
+          id="searchInput"
+          placeholder="輸入關鍵字（如：免費AI, Google探索, 康仕仲, 珊珊, 曾明賢, 簡立峰）..." 
+          class="w-full pl-12 pr-24 py-4 bg-slate-850/90 text-white placeholder-slate-500 rounded-full border border-slate-700/80 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition-all shadow-inner bg-slate-950"
+        >
+        <button 
+          id="searchClearBtn"
+          class="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-white hidden"
+          onclick="clearSearch()"
+        >
+          <i class="fa-solid fa-circle-xmark text-lg"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 大學生最關心：2026 關鍵數據指標 -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 -mt-8 relative z-10">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white p-5 rounded-2xl shadow-md border border-indigo-100/50 flex flex-col justify-between hover:shadow-lg transition-shadow">
+        <span class="text-slate-500 text-xs font-bold uppercase tracking-wider flex items-center"><i class="fa-solid fa-hotel text-indigo-500 mr-1.5"></i>47 所國立大學</span>
+        <span class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">館館有 AI</span>
+        <span class="text-[11px] text-indigo-600 mt-1 font-semibold">持借書證免費在圖書館用進階 AI</span>
+      </div>
+      <div class="bg-white p-5 rounded-2xl shadow-md border border-indigo-100/50 flex flex-col justify-between hover:shadow-lg transition-shadow">
+        <span class="text-slate-500 text-xs font-bold uppercase tracking-wider flex items-center"><i class="fa-solid fa-money-bill-trend-up text-indigo-500 mr-1.5"></i>審計新鮮人起薪</span>
+        <span class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-2">調高 2000 元</span>
+        <span class="text-[11px] text-slate-500 mt-1 font-semibold">KPMG、安永等年度調薪達 12%</span>
+      </div>
+      <div class="bg-white p-5 rounded-2xl shadow-md border border-indigo-100/50 flex flex-col justify-between hover:shadow-lg transition-shadow">
+        <span class="text-slate-500 text-xs font-bold uppercase tracking-wider flex items-center"><i class="fa-solid fa-laptop-code text-indigo-500 mr-1.5"></i>軟體工程大翻盤</span>
+        <span class="text-2xl sm:text-3xl font-extrabold text-indigo-600 mt-2">171 萬中位數</span>
+        <span class="text-[11px] text-slate-500 mt-1 font-semibold">類比 IC 工程師年薪中位數霸榜</span>
+      </div>
+      <div class="bg-white p-5 rounded-2xl shadow-md border border-indigo-100/50 flex flex-col justify-between hover:shadow-lg transition-shadow">
+        <span class="text-slate-500 text-xs font-bold uppercase tracking-wider flex items-center"><i class="fa-solid fa-graduation-cap text-indigo-500 mr-1.5"></i>數位人才探索計劃</span>
+        <span class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">免費培訓</span>
+        <span class="text-[11px] text-indigo-600 mt-1 font-semibold">即日起報名至 2026 年 8 月 10 日</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主體排版：左側資源庫，右側大學生競爭力診斷與焦點名詞 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- 左側與中央：大學生學習與求職資源庫 (佔 2 欄) -->
+    <div class="lg:col-span-2 space-y-8">
+      
+      <!-- 學習與求職資源庫 -->
+      <section id="resources" class="scroll-mt-20">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div class="flex items-center space-x-2">
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">超級學習與求職資源</h2>
+            <span id="resourceCount" class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-0.5 rounded-full font-bold"></span>
+          </div>
+          <!-- 大學生分類過濾按鈕 -->
+          <div class="flex flex-wrap gap-1.5" id="categoryFilters">
+            <button onclick="filterCategory('all')" class="filter-btn px-3 py-1.5 text-xs rounded-lg bg-indigo-600 text-white font-semibold transition" data-cat="all">全部</button>
+            <button onclick="filterCategory('campus')" class="filter-btn px-3 py-1.5 text-xs rounded-lg bg-slate-200 hover:bg-indigo-50 text-slate-700 font-semibold transition" data-cat="campus">校園與免費AI</button>
+            <button onclick="filterCategory('coding')" class="filter-btn px-3 py-1.5 text-xs rounded-lg bg-slate-200 hover:bg-indigo-50 text-slate-700 font-semibold transition" data-cat="coding">專題開發與編程</button>
+            <button onclick="filterCategory('career')" class="filter-btn px-3 py-1.5 text-xs rounded-lg bg-slate-200 hover:bg-indigo-50 text-slate-700 font-semibold transition" data-cat="career">職涯前景與創業</button>
+            <button onclick="filterCategory('study')" class="filter-btn px-3 py-1.5 text-xs rounded-lg bg-slate-200 hover:bg-indigo-50 text-slate-700 font-semibold transition" data-cat="study">超級學習與效率</button>
+          </div>
+        </div>
+
+        <!-- 資源庫網格 -->
+        <div id="resourceGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- 卡片由 JS 動態生成 -->
+        </div>
         
-        <div id="noResults" class="no-results">
-            <h3>找不到相符的內容</h3>
-            <p>嘗試更換關鍵字，例如「輝達」、「Excel」、「指標」或「策略」。</p>
+        <!-- 找不到結果的替代顯示 -->
+        <div id="noResults" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-100 shadow">
+          <div class="text-indigo-400 text-5xl mb-3"><i class="fa-regular fa-folder-open"></i></div>
+          <p class="text-slate-500 font-semibold">找不到符合關鍵字的資源庫項目</p>
+          <button onclick="resetSearch()" class="mt-4 text-xs font-semibold text-indigo-600 hover:underline">重設搜尋條件</button>
         </div>
+      </section>
 
-        <section id="resourcesSection">
-            <h2 class="section-title">精選自主學習資源庫</h2>
-            <div class="resources-grid">
-                
-                <div class="resource-card" data-keywords="nvidia 輝達 黃仁勳 科技創新 晶片 創業 科技 科技創新開發架構">
-                    <div class="card-body">
-                        <span class="card-badge badge-tech">科技創新</span>
-                        <h3 class="card-title">Nvidia 的瘋狂成長之路與 CUDA 架構</h3>
-                        <p class="card-text">探討黃仁勳如何將 Nvidia 從 3 人小公司帶領成為 AI 晶片霸主。核心重點在於 2006 年推出的統一計算架構 CUDA，這項基礎技術打破了 GPU 僅能處理圖形限制，成功開啟通用計算（GPGPU）新時代，並在 2012 年 ImageNet 競賽中大放異彩。</p>
-                        <div class="card-meta">來源：精選導讀《輝達之道》</div>
-                    </div>
-                </div>
+      <!-- 大學生解惑 FAQ 模組 -->
+      <section id="faq" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-100 shadow-md scroll-mt-20">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900 mb-6 flex items-center tracking-tight">
+          <i class="fa-solid fa-circle-question text-indigo-500 mr-2.5 text-2xl"></i>
+          大學生 AI 世代生存解惑 FAQ
+        </h2>
+        <div class="space-y-4" id="faqAccordion">
+          <!-- 由 JS 動態渲染 Accordion -->
+        </div>
+      </section>
 
-                <div class="resource-card" data-keywords="excel 電競 數位技能 數據處理 競賽 技能 fmwc 大賽 規則 關卡">
-                    <div class="card-body">
-                        <span class="card-badge badge-esport">數位技能</span>
-                        <h3 class="card-title">Excel 世界大賽與資料處理電競化</h3>
-                        <p class="card-text">顛覆傳統思維！商務辦公軟體 Excel 已轉化為全球頂尖電競大賽（FMWC）。選手必須在極高壓的時間內（如 30 分鐘內解決 6 個複雜層級的問題），靈活運用各式公式與邏輯解題，展現神級資料分析實力。</p>
-                        <div class="card-meta">來源：數位趨勢《神扯電玩》</div>
-                    </div>
-                </div>
+    </div>
 
-                <div class="resource-card" data-keywords="投資 股票 財經 roic 複利 策略 財務指標 資產 報酬率 爛蘋果">
-                    <div class="card-body">
-                        <span class="card-badge badge-finance">財經投資</span>
-                        <h3 class="card-title">別再看股價！全面改看核心指標 ROIC</h3>
-                        <p class="card-text">專為不想天天盯盤的投資者設計。書中強調主動選股的關鍵不是追逐短期股價波段，而是檢視「投入資本回報率 (ROIC)」。透過每季調整一次部位（一年四次），嚴格淘汰「爛蘋果」企業，達成資產的長期複利成長。</p>
-                        <div class="card-meta">來源：經典財務《別再看股價了》</div>
-                    </div>
-                </div>
+    <!-- 右側：大學生 AI 競爭力診斷器與焦點名詞 (佔 1 欄) -->
+    <div class="space-y-8">
+      
+      <!-- 大學生 AI 世代競爭力診斷器 -->
+      <section id="assessment" class="bg-gradient-to-b from-indigo-900 to-indigo-950 text-white p-6 rounded-2xl shadow-xl border border-indigo-800 scroll-mt-20 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-2xl"></div>
+        <h3 class="text-lg font-bold mb-2 flex items-center">
+          <i class="fa-solid fa-chart-line text-indigo-400 mr-2"></i>
+          大學生 AI 競爭力診斷器
+        </h3>
+        <p class="text-xs text-indigo-200 mb-6 leading-relaxed">
+          基於波士頓顧問公司 (BCG) 的「12-70-20」轉型法則與 MIT 博士設計的快速導入法，為你量身評估，搶先打造未來的核心優勢！
+        </p>
 
+        <form id="diagForm" onsubmit="runDiagnostic(event)" class="space-y-4 relative z-10">
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-indigo-300 mb-2">1. 你的就讀科系 / 背景領域</label>
+            <select id="diagSize" class="w-full bg-indigo-950 border border-indigo-700 text-white rounded-lg p-3 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <option value="coding">理工與資訊背景 (CS, EE, 土木工科等)</option>
+              <option value="career">文商、行銷與管理背景 (中文、企管、財金、會計等)</option>
+              <option value="study">不限領域 / 跨學科或個人創作者</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-indigo-300 mb-2">2. 目前最核心的學習或求職痛點</label>
+            <select id="diagPain" class="w-full bg-indigo-950 border border-indigo-700 text-white rounded-lg p-3 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <option value="automation">想用 AI 加速寫報告、讀長論文與會議紀錄</option>
+              <option value="decision">擔心寫程式被 AI 取代，不知道該學什麼新技能</option>
+              <option value="smarter">想在大學期間累積接案或知識創業（把好技術變好生意）</option>
+              <option value="ecosystem">不知道去哪裡申請免費的進階 AI 軟體與培訓資源</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-400 hover:to-violet-500 text-white font-bold text-xs py-3 rounded-lg transition-all shadow-md shadow-indigo-900/30">
+            開始評估與決策建議
+          </button>
+        </form>
+
+        <!-- 診斷結果 -->
+        <div id="diagResult" class="hidden mt-6 bg-indigo-950/80 border border-indigo-800 p-4 rounded-xl text-xs space-y-3 leading-relaxed">
+          <!-- 動態生成診斷報告 -->
+        </div>
+      </section>
+
+      <!-- 核心專有名詞：大學生白話版 -->
+      <section class="bg-white p-6 rounded-2xl border border-slate-100 shadow-md">
+        <h3 class="text-md font-bold text-slate-900 mb-4 flex items-center">
+          <i class="fa-solid fa-tag text-indigo-500 mr-2"></i>
+          2026 數位必懂辭典
+        </h3>
+        <div class="space-y-3 text-xs">
+          <div class="p-2.5 bg-slate-50 rounded-lg border-l-4 border-indigo-500">
+            <strong class="text-slate-800 block mb-1">館館有 AI (校園免費進階 AI)</strong>
+            <p class="text-slate-600">教育部 2026 戰略，學生持國立大學或圖書館借書證，可在館內免費使用付費版進階 AI 工具（如 ChatGPT Plus, Claude Pro 等）。</p>
+          </div>
+          <div class="p-2.5 bg-slate-50 rounded-lg border-l-4 border-indigo-500">
+            <strong class="text-slate-800 block mb-1">Vibe Coding (感覺編程)</strong>
+            <p class="text-slate-600">OpenAI 前創辦人 Andrej Karpathy 指出。未來人不需要看繁雜程式碼，只要對 AI 指揮、按「接受」，就能在幾分鐘內用 Cursor 或 Claude Code 做出專題原型。</p>
+          </div>
+          <div class="p-2.5 bg-slate-50 rounded-lg border-l-4 border-indigo-500">
+            <strong class="text-slate-800 block mb-1">超級工作者 (Superworker)</strong>
+            <p class="text-slate-600">不限工程背景！大學生能靠個人調度 N8N、Make、Markdown 與 Skill 等自動化，在半小時內產出一期高水準內容，效率超越傳統團隊。</p>
+          </div>
+          <div class="p-2.5 bg-slate-50 rounded-lg border-l-4 border-indigo-500">
+            <strong class="text-slate-800 block mb-1">產品品味 (Product Taste)</strong>
+            <p class="text-slate-600">當 AI 讓程式碼與報告變得很便宜時，最珍貴的是你判斷「什麼功能值得被做」和「如何精準理解使用者需求」的綜合美感與洞察力。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 學生創業與實踐指南 -->
+      <section class="bg-indigo-50 p-5 rounded-2xl border border-indigo-100">
+        <h4 class="text-sm font-bold text-indigo-900 mb-2">
+          Jubo 康仕仲教授的悄悄話
+        </h4>
+        <p class="text-xs text-indigo-800 leading-relaxed">
+          台大教授親自創業七年分享：不要只待在象牙塔。大學生的創意專題要在真實世界落地，必須學會「解決使用者的實際痛點」，從 Feasible（可行）逐步邁向 Repeatable（可重複）跟 Scalable（可規模化），好技術才能成功變好生意！
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 頁腳 -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-circle-nodes text-indigo-500"></i>
+        <span>2026 數位時代大學生知識庫 · 嚴格基於所提供資料製作</span>
+      </div>
+      <div class="flex space-x-6">
+        <span>不只學習更快，更要學習更聰明 (Work Smarter)</span>
+        <span>47所國立大學 · 館館有AI</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Javascript 驅動邏輯 -->
+  <script>
+    // 嚴格來源庫數據，完全提取自上傳文件，並針對大學生受眾重新包裝命名與定位
+    const sourceData = {
+      resources: [
+        {
+          id: "r1",
+          title: "圖書館 ChatGPT 與 Claude 免費開放！教育部推「館館有 AI」",
+          speaker: "教育部長鄭藥 & 立法委員葛如軍",
+          category: "campus",
+          summary: "教育部 2026 年底全面於國家圖書館等示辦。持借書證即可在圖書館免費使用 ChatGPT、Claude 等付費版進階 AI 工具，解決學生間的資源不平等問題。部長鄭藥表示，將協助全國 47 所國立大學推動此計畫，並與各校合作，經費由大學既有補助款推行。",
+          badge: "館館有 AI"
+        },
+        {
+          id: "r2",
+          title: "大學生免費數位培訓！Google 台灣正式啟動「數位人才探索計劃」",
+          speaker: "Google 台灣官方",
+          category: "campus",
+          summary: "Google 於台灣推出免費的專業數位技能培訓課程，特別適合各類科系背景學員。課程涵蓋「AI 職場通識學程」（生成式 AI 應用與 Google Workspace 優化技巧）、「數位行銷學程」（數據分析與 AI 搜尋廣告）及「Cloud 雲端學程」。即日起開放報名至 2026 年 8 月 10 日中午 12 點。",
+          badge: "Google 數位人才"
+        },
+        {
+          id: "r3",
+          title: "寫程式已經被 AI 解完了！Claude Code 創始人談「Vibe Coding」",
+          speaker: "Claude Code 創始人 Boris Chney",
+          category: "coding",
+          summary: "「對我來說，Coding 已經結案了！」未來工程師的角色將不再是單純的程式碼撰寫者，而是 AI 團隊的指揮者，負責下達指令與分派任務。全員 Vibe Coding 跨域團隊將成為未來主流，這意味著非工程背景學生（如文商、行銷）也能快速打造產品與專題原型，競爭力關鍵在於「解決問題的品味與洞察力」。",
+          badge: "Vibe Coding"
+        },
+        {
+          id: "r4",
+          title: "OpenAI 駕馭工程實戰：3人小組不打任何一行 Code 寫出百萬行程式",
+          speaker: "OpenAI 團隊 / AWSErnest",
+          category: "coding",
+          summary: "OpenAI 團隊實戰測試：3位工程師在5個月內，完全不手打任何一行程式碼，全靠 AI 生成 100 萬行程式碼並完成 1500 次提交。這代表寫程式的成本極低，真正的競爭力在於「Harness Engineering（駕馭工程）」。三大支柱：上下文Context工程（如 agent.md 戰術地圖）、明確的架構約束與強制執行、以及定期的 Garbage Collection 與反思迭代。",
+          badge: "Harness Engineering"
+        },
+        {
+          id: "r5",
+          title: "教授下海創業七年：康仕仲談如何把大學專題技術做成好生意",
+          speaker: "台大教授 / 智靈科技(Jubo) 康仕仲",
+          category: "career",
+          summary: "台大教授辭職創業，將 Jubo 長照軟體打入全台近半機構、打入北美 PointClickCare 及日本 Mitsui 生態系。指出技術到商品有五個階段（Feasible -> Repeatable -> Scalable -> Profitable）。透過 MIT 博士重新設計「導入流程」，將 2 個月的導入上線縮短為 3 天。鼓勵學生多走進現場（User-centered Design）發掘真實痛點。",
+          badge: "Jubo 長照創業課"
+        },
+        {
+          id: "r6",
+          title: "畢業即加薪！KPMG、安永四大會計師事務所啟動大規模調薪",
+          speaker: "104 人力銀行 / 四大會計師事務所",
+          category: "career",
+          summary: "因應全球人才短缺及審計環境變化，國內四大會計事務所啟動調薪。KPMG、安永預計審計部門年度調薪幅度最高可達 12%，新鮮人起薪普遍調高 2000 元，表現優異員工入行 2 至 3 年後，年薪有望突破百萬。提供彈性工作模式與專業培訓，特別重視會計師的 AI 工具應用與流程自動化。",
+          badge: "新鮮人職涯起薪"
+        },
+        {
+          id: "r7",
+          title: "一個月發布一個產品！前 StreetVoice 總經理回頭重新學 Coding 記",
+          speaker: "USPACE AI長 曾明賢（小海）",
+          category: "coding",
+          summary: "曾明賢任總經理 15 年後卸任，利用一年的 Gap Year 被 AI 震撼，重新透過 Cursor 與 Claude Code 寫程式。重回一線一週或一個月打磨一個產品。加入 USPACE 擔任 AI 長，創立「AI 一對一門診」，引導各部門將每週最煩人的 4 小時工作交給 AI 自動化（如自動派工與 AI 接聽開關停車場閘門）。",
+          badge: "總經理 CAIO 實戰"
+        },
+        {
+          id: "r8",
+          title: "不靠流量靠「品味與信任」！當寫 Code 變便宜，AI 時代真正貴的是 Taste",
+          speaker: "Anthropic 產品主管開悟 & Andrej Karpathy",
+          category: "career",
+          summary: "當寫 Code 成本降到近乎免費時，PM 的價值不只是實現功能，而是「判斷哪些功能值得被開發」。Andrej Karpathy 警示：10倍工程師概念已不適用，駕馭代理工程（Agentic Engineering）人才加速能力遠超 10 倍。雖然 AI 可以外包思考過程，但人類的「理解能力」與「品味（Taste）」才是不可取代的分水嶺。",
+          badge: "Product Taste"
+        },
+        {
+          id: "r9",
+          title: "5 分鐘內用 YouTube to Notebook LM 一鍵建立你的專屬學習知識庫",
+          speaker: "Chrome 擴充套件應用",
+          category: "study",
+          summary: "最新 Chrome 擴充套件「YouTube to Notebook LM」讓學生可以將任何 YouTube 頻道的整套影片一鍵匯入 Google Notebook LM。5 分鐘內建立高精確度的專屬複習知識庫。建議結合個人情境提問（如制定具體行動計畫、建立知識框架、梳理複雜論文），讓 AI 幫你做報告更聰明、更省時（Work Smarter）。",
+          badge: "Notebook LM 學習法"
+        },
+        {
+          id: "r10",
+          title: "不陷入生產力迷思！「一天一 AI」珊珊教你打造 3 萬訂閱的超級工作者工作流",
+          speaker: "一天一AI 電子報 珊珊 (ShanShan)",
+          category: "study",
+          summary: "珊珊每天僅花 30 分鐘到一小時，用 N8N、Make 與 Skill 串聯工作流（從內容撰寫、標題摘要到 AI 自動配圖）。透過在 Google Sheet 建立 Human-in-the-loop 的校正機制，讓 AI 持續學習自己的寫作風格。將省下的時間拿去與真實世界的人交流採集獨家 Input，拒絕陷入無腦複製貼上（Ctrl C + Ctrl V）的迴圈。",
+          badge: "Superworker"
+        }
+      ],
+      faqs: [
+        {
+          id: "f1",
+          q: "我不是資訊系學生，也能做 Vibe Coding 做出專題或產品嗎？",
+          a: "完全可以！根據 Claude Code 創始人 Boris Chney 與 USPACE AI長曾明賢（小海）的實戰經驗，AI 寫程式的能力已經極高。文商、行銷等非工程背景的學生，只需善用 Cursor 或 Claude Code，用白話「自然語言」清晰表達你的商業目的和邏輯架構。AI 就有能力自動編寫、甚至修改你看不懂的程式碼，並在幾分鐘內完成 95% 的自動化開發。你不需要成為寫 Code 機器，你只需要當 AI 的「指揮家」。"
+        },
+        {
+          id: "f2",
+          q: "教育部推的「館館有 AI」，大學生要怎麼免費申請使用？",
+          a: "根據教育部 2026 年底的最新政策，將於國家圖書館等國立圖書館示辦，並協助全國 47 所國立大學推動此計畫。民眾或大學生只需要「持借書證」，就可以在圖書館設置的「專用電腦」上免費體驗並使用進階、付費版的 AI 工具（如 ChatGPT Plus、Claude Pro 等）。這能有效縮小學生間因算力與訂閱經費造成的資源不平等問題。"
+        },
+        {
+          id: "f3",
+          q: "身為大學生，如何避免「為 AI 而 AI」的學習迷思？",
+          a: "學習軟體多鄰國 (Duolingo) 撤回員工 AI 考核制度的案例給了我們極大的警示：多鄰國曾強制將 AI 使用頻率納入員工績效考核，卻遭致反彈、偏離工作目標。這證明「使用 AI 的頻率」不代表實質價值。大學生不應只是為了追求高效而狂用 AI 複製貼上大量文字。你應該要「Work Smarter」——把重複性的工作外包，並將省下來的時間投入「Product Taste（產品品味）」的培育，主動去發掘問題、學習跨域整合，這才是 AI 時代最具價值的核心竞争力。"
+        },
+        {
+          id: "f4",
+          q: "我想在大學時期創業或接案，教授對「好技術變好生意」有什麼建議？",
+          a: "台大康仕仲教授在創業七年、將長照科技 Jubo 推向世界的過程中，提出產品發展必須歷經四個階段：1. Feasible (技術可行) -> 2. Repeatable (在多個客戶間重現) -> 3. Scalable (可以規模化複製) -> 4. Profitable (持續穩定獲利)。康教授提醒學生，不能只待在實驗室，必須深入現場去實踐「User-centered Design（使用者中心設計）」，像 Jubo 就是學生住在長照中心、在現場發現外籍看護量測的不便，才研發出銷往美日的量測推車。好生意永遠來自「解決使用者的真實痛點」，而不是只看你的技術有多炫。"
+        },
+        {
+          id: "f5",
+          q: "如何利用 AI 來大幅加快報告和會議紀錄的撰寫？",
+          a: "推薦使用 Google Notebook LM（可搭配 YouTube to Notebook LM 擴充套件）。你可以先建立一份 Google 文件，設定好你想要的會議紀錄格式（核心目的、關鍵討論觀點、最終決策、待辦事項、待討論事項等）。接著登入 Notebook LM 上傳你的文獻或會議錄音檔，在對話框中發出指令，AI 就會完全基於你的專屬素材自動整理出高精確度的報告。這種做法可以完全避免 AI 的「幻覺」，讓你幾分鐘內完成數天的報告整理。"
+        }
+      ]
+    };
+
+    let activeCategory = 'all';
+
+    // 初始化頁面
+    document.addEventListener("DOMContentLoaded", () => {
+      renderResources();
+      renderFAQs();
+    });
+
+    // 渲染資源庫
+    function renderResources() {
+      const grid = document.getElementById("resourceGrid");
+      const query = document.getElementById("searchInput").value.toLowerCase().trim();
+      grid.innerHTML = "";
+
+      let filtered = sourceData.resources;
+
+      // 分類過濾
+      if (activeCategory !== 'all') {
+        filtered = filtered.filter(r => r.category === activeCategory);
+      }
+
+      // 關鍵字搜尋過濾
+      if (query !== "") {
+        filtered = filtered.filter(r => 
+          r.title.toLowerCase().includes(query) || 
+          r.speaker.toLowerCase().includes(query) || 
+          r.summary.toLowerCase().includes(query) || 
+          r.badge.toLowerCase().includes(query)
+        );
+      }
+
+      // 數量統計
+      document.getElementById("resourceCount").innerText = `${filtered.length} 個項目`;
+
+      if (filtered.length === 0) {
+        document.getElementById("noResults").classList.remove("hidden");
+      } else {
+        document.getElementById("noResults").classList.add("hidden");
+        filtered.forEach(item => {
+          const card = document.createElement("div");
+          card.className = "bg-white rounded-2xl border border-slate-150 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between";
+          
+          card.innerHTML = `
+            <div>
+              <div class="flex justify-between items-start gap-2 mb-3">
+                <span class="bg-indigo-50 text-indigo-700 text-[10px] font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                  ${item.badge}
+                </span>
+                <span class="text-slate-400 text-xs flex items-center font-medium">
+                  <i class="fa-solid fa-user-tag mr-1 text-indigo-500"></i> ${item.speaker}
+                </span>
+              </div>
+              <h3 class="text-base font-bold text-slate-900 leading-snug mb-2 hover:text-indigo-600 transition">
+                ${item.title}
+              </h3>
+              <p class="text-xs text-slate-600 leading-relaxed custom-scrollbar max-h-24 overflow-y-auto mb-4">
+                ${item.summary}
+              </p>
             </div>
-        </section>
-
-        <section id="faqSection">
-            <h2 class="section-title">自主學習 FAQ 常見問題</h2>
-            <div class="faq-container">
-                
-                <div class="faq-item" data-keywords="cuda nvidia 黃仁勳 什麼是 核心 技術 顯示卡 通用計算">
-                    <button class="faq-header">
-                        <span>Q1: 什麼是 CUDA？它對 Nvidia 成為 AI 霸主有何關鍵影響？</span>
-                        <span class="faq-icon">▼</span>
-                    </button>
-                    <div class="faq-content">
-                        <div class="faq-content-inner">
-                            <strong>CUDA (統一計算架構)</strong> 是 Nvidia 於 2006 年推出的核心基礎技術。它允許科學家與工程師直接利用 GPU 的強大並行運算能力來處理圖形以外的「通用計算」(GPGPU)。黃仁勳不惜重金與全美頂尖大學合作提供硬體，使其成為行業標準。這項長遠的投資在 2012 年人工智慧 AlexNet 採用其進行 AI 訓練時正式開花結果，奠定了如今的 AI 霸主地位。
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faq-item" data-keywords="excel 世界大賽 規則 怎麼比 級別 參賽 資格 時間 題目">
-                    <button class="faq-header">
-                        <span>Q2: Excel 世界大賽是怎麼進行的？大學生如何獲得參賽資格？</span>
-                        <span class="faq-icon">▼</span>
-                    </button>
-                    <div class="faq-content">
-                        <div class="faq-content-inner">
-                            Excel 世界大賽決賽於拉斯維加斯舉辦，主要有兩種管道獲取入場券：一是參加官方舉辦的 9 場線上競賽（Road to Vegas），每場前 10 名入選；二是透過 Financial Modeling World Cup (FMWC) 歷史積分。比賽中會提供極度複雜、分層級（Level 1 至 Level 6+）的案例文件，考驗選手在時限內運用進階公式解題的能力。
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faq-item" data-keywords="roic 財務指標 選股 投資 盯盤 複利 策略 資本回報率">
-                    <button class="faq-header">
-                        <span>Q3: 為什麼《別再看股價了》提倡看 ROIC 而非股價？</span>
-                        <span class="faq-icon">▼</span>
-                    </button>
-                    <div class="faq-content">
-                        <div class="faq-content-inner">
-                            因為股價容易受到短期市場情緒與新聞雜訊干擾，而 <strong>ROIC (投入資本回報率)</strong> 才能真實反映一家企業運營賺錢的本質效率。書中的主動選股哲學主張：大學生不需要每天盯盤，只要大約「每一季度（一年四次）」進行一次投資部位調整，根據指標挑出並淘汰表現不佳的「爛蘋果」，就能穩定享受長期複利。
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faq-item" data-keywords="萬用指標 roic 缺點 微軟 股價 策略 堅定執行">
-                    <button class="faq-header">
-                        <span>Q4: 投資市場上是否存在「萬用指標」？如果 ROIC 下跌但股價上漲該怎麼辦？</span>
-                        <span class="faq-icon">▼</span>
-                    </button>
-                    <div class="faq-content">
-                        <div class="faq-content-inner">
-                            書中明確指出，<strong>世界上沒有任何一套指標是萬用的</strong>。例如微軟在 2014 年到 2019 年期間，ROIC 持續滑落甚至與 WACC 交叉，但股價依然在上漲。投資的重點在於「建立一套好的策略並堅定執行它」。核心指導原則是「寧可錯過一顆好蘋果，也絕不能讓任何一顆爛蘋果進入部位」，維持投資組合的純淨度。
-                        </div>
-                    </div>
-                </div>
-
+            <div class="border-t border-slate-100 pt-3 flex justify-between items-center text-[11px] font-medium">
+              <span class="text-slate-400">2026 大學生成長指南</span>
+              <button onclick="fillSearch('${item.title}')" class="text-indigo-600 hover:text-indigo-500 font-bold flex items-center gap-1">
+                查看推薦 Q&A <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </button>
             </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <p>&copy; 2026 大學生自主學習知識庫. Built for Learning & Innovation.</p>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- 1. FAQ 手風琴摺疊互動邏輯 ---
-            const faqHeaders = document.querySelectorAll('.faq-header');
-            
-            faqHeaders.forEach(header => {
-                header.addEventListener('click', () => {
-                    const currentItem = header.parentElement;
-                    const isOpen = currentItem.classList.contains('active');
-                    
-                    // 關閉其他已打開的 FAQ（可選，若想允許同時打開多個可註解此段）
-                    document.querySelectorAll('.faq-item').forEach(item => {
-                        item.classList.remove('active');
-                        item.querySelector('.faq-content').style.maxHeight = null;
-                        item.querySelector('.faq-icon').textContent = '▼';
-                    });
-                    
-                    // 切換當前點擊的 FAQ 狀態
-                    if (!isOpen) {
-                        currentItem.classList.add('active');
-                        const content = currentItem.querySelector('.faq-content');
-                        // 動態計算並賦予高度以觸發平滑動畫
-                        content.style.maxHeight = content.scrollHeight + "px";
-                        currentItem.querySelector('.faq-icon').textContent = '▲';
-                    }
-                });
-            });
-
-
-            // --- 2. 即時前端搜尋過濾邏輯 ---
-            const searchInput = document.getElementById('searchInput');
-            const resourceCards = document.querySelectorAll('.resource-card');
-            const faqItems = document.querySelectorAll('.faq-item');
-            const noResults = document.getElementById('noResults');
-            const resourcesSection = document.getElementById('resourcesSection');
-            const faqSection = document.getElementById('faqSection');
-
-            searchInput.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase().trim();
-                let visibleCardsCount = 0;
-                let visibleFaqsCount = 0;
-
-                // 若搜尋框為空，顯示所有內容並恢復預設外觀
-                if (query === '') {
-                    resourceCards.forEach(card => card.style.display = 'flex');
-                    faqItems.forEach(item => {
-                        item.style.display = 'block';
-                        // 恢復原先摺疊狀態
-                        item.classList.remove('active');
-                        item.querySelector('.faq-content').style.maxHeight = null;
-                        item.querySelector('.faq-icon').textContent = '▼';
-                    });
-                    noResults.style.display = 'none';
-                    resourcesSection.style.display = 'block';
-                    faqSection.style.display = 'block';
-                    return;
-                }
-
-                // 過濾精選資源庫卡片
-                resourceCards.forEach(card => {
-                    const title = card.querySelector('.card-title').textContent.toLowerCase();
-                    const text = card.querySelector('.card-text').textContent.toLowerCase();
-                    const keywords = card.getAttribute('data-keywords').toLowerCase();
-                    
-                    if (title.includes(query) || text.includes(query) || keywords.includes(query)) {
-                        card.style.display = 'flex';
-                        visibleCardsCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                // 過濾 FAQ 項目
-                faqItems.forEach(item => {
-                    const headerText = item.querySelector('.faq-header span').textContent.toLowerCase();
-                    const contentText = item.querySelector('.faq-content-inner').textContent.toLowerCase();
-                    const keywords = item.getAttribute('data-keywords').toLowerCase();
-
-                    if (headerText.includes(query) || contentText.includes(query) || keywords.includes(query)) {
-                        item.style.display = 'block';
-                        visibleFaqsCount++;
-                        
-                        // 自動展開符合搜尋條件的 FAQ
-                        item.classList.add('active');
-                        const content = item.querySelector('.faq-content');
-                        content.style.maxHeight = content.scrollHeight + "px";
-                        item.querySelector('.faq-icon').textContent = '▲';
-                    } else {
-                        item.style.display = 'none';
-                        item.classList.remove('active');
-                        item.querySelector('.faq-content').style.maxHeight = null;
-                    }
-                });
-
-                // 判斷是否顯示個別區塊或「查無結果」提示
-                resourcesSection.style.display = visibleCardsCount > 0 ? 'block' : 'none';
-                faqSection.style.display = visibleFaqsCount > 0 ? 'block' : 'none';
-
-                if (visibleCardsCount === 0 && visibleFaqsCount === 0) {
-                    noResults.style.display = 'block';
-                } else {
-                    noResults.style.display = 'none';
-                }
-            });
+          `;
+          grid.appendChild(card);
         });
-    </script>
+      }
+    }
+
+    // 渲染常見問答 FAQ Accordion
+    function renderFAQs() {
+      const container = document.getElementById("faqAccordion");
+      const query = document.getElementById("searchInput").value.toLowerCase().trim();
+      container.innerHTML = "";
+
+      let filtered = sourceData.faqs;
+
+      if (query !== "") {
+        filtered = filtered.filter(f => 
+          f.q.toLowerCase().includes(query) || 
+          f.a.toLowerCase().includes(query)
+        );
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-6 text-slate-400 text-xs font-semibold">
+            <i class="fa-solid fa-circle-info mr-1 text-indigo-500"></i> 查無符合目前關鍵字的學術與生存 FAQ 問答
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach((item, index) => {
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "border border-slate-100 rounded-xl overflow-hidden shadow-sm";
+        
+        itemDiv.innerHTML = `
+          <button 
+            onclick="toggleAccordion('faq-${index}')"
+            class="w-full bg-slate-50/80 hover:bg-slate-100/80 p-4 text-left font-bold text-sm text-slate-800 flex justify-between items-center transition"
+          >
+            <span>Q: ${item.q}</span>
+            <i id="icon-faq-${index}" class="fa-solid fa-chevron-down text-indigo-500 text-xs transition-transform duration-300"></i>
+          </button>
+          <div 
+            id="content-faq-${index}" 
+            class="max-h-0 overflow-hidden transition-all duration-300 bg-white"
+          >
+            <div class="p-4 text-xs text-slate-600 leading-relaxed border-t border-slate-100 font-medium">
+              ${item.a}
+            </div>
+          </div>
+        `;
+        container.appendChild(itemDiv);
+      });
+    }
+
+    // FAQ 展開/收合控制
+    function toggleAccordion(id) {
+      const content = document.getElementById(`content-${id}`);
+      const icon = document.getElementById(`icon-${id}`);
+      
+      if (content.style.maxHeight === "0px" || !content.style.maxHeight) {
+        content.style.maxHeight = content.scrollHeight + "px";
+        icon.style.transform = "rotate(180deg)";
+      } else {
+        content.style.maxHeight = "0px";
+        icon.style.transform = "rotate(0deg)";
+      }
+    }
+
+    // 分類過濾切換
+    function filterCategory(cat) {
+      activeCategory = cat;
+      const buttons = document.querySelectorAll(".filter-btn");
+      buttons.forEach(btn => {
+        if (btn.getAttribute("data-cat") === cat) {
+          btn.className = "filter-btn px-3 py-1.5 text-xs rounded-lg bg-indigo-600 text-white font-semibold transition";
+        } else {
+          btn.className = "filter-btn px-3 py-1.5 text-xs rounded-lg bg-slate-200 hover:bg-indigo-50 text-slate-700 font-semibold transition";
+        }
+      });
+      renderResources();
+    }
+
+    // 搜尋框輸入事件
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      const query = e.target.value.trim();
+      const clearBtn = document.getElementById("searchClearBtn");
+      
+      if (query !== "") {
+        clearBtn.classList.remove("hidden");
+      } else {
+        clearBtn.classList.add("hidden");
+      }
+      renderResources();
+      renderFAQs();
+    });
+
+    // 點擊資源卡片自動填入搜尋
+    function fillSearch(term) {
+      // 提取核心關鍵字（例如書名或講者）簡化搜尋
+      const cleanTerm = term.split("！")[1] ? term.split("！")[1].substring(0, 6) : term.substring(0, 6);
+      document.getElementById("searchInput").value = cleanTerm;
+      document.getElementById("searchClearBtn").classList.remove("hidden");
+      renderResources();
+      renderFAQs();
+      // 滾動到 FAQ
+      document.getElementById("faq").scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 清除搜尋
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("searchClearBtn").classList.add("hidden");
+      renderResources();
+      renderFAQs();
+    }
+
+    function resetSearch() {
+      clearSearch();
+      filterCategory('all');
+    }
+
+    // 大學生 AI 競爭力評估診斷器邏輯
+    function runDiagnostic(e) {
+      e.preventDefault();
+      const size = document.getElementById("diagSize").value;
+      const pain = document.getElementById("diagPain").value;
+      const resultDiv = document.getElementById("diagResult");
+      
+      let reportHTML = "";
+
+      // 嚴格依據 EP281(BCG) & EP240(康仕仲) & EP238(Harness) & EP239(USPACE CAIO) & 教育部「館館有AI」
+      if (size === "coding") {
+        reportHTML += `<h4 class="font-bold text-indigo-400 text-sm mb-2"><i class="fa-solid fa-code mr-1"></i> 理工與資訊系專屬建議（Harness & Vibe Coding 架構）：</h4>`;
+        reportHTML += `<p class="mb-2"><strong>核心心態：</strong> 「寫程式已經被 AI 解完了！」未來專家的價值，不再是堆砌大量低階語法。Andrej Karpathy 警告：能掌握「代理工程 (Agentic Engineering)」的大學編程效率，將遠超傳統工程師 10 倍以上。你必須提前用「教練與指揮家」的角度去思考如何管理 AI 團隊。</p>`;
+        
+        if (pain === "automation") {
+          reportHTML += `<p><strong>實戰方案：</strong> 在進行畢業專題時，不要一整坨把需求丟給 AI。應建立 <strong>agent.md</strong>（限制在 60-100 行內）當作 AI 的戰術地圖。使用 <strong>JSON 格式</strong> 當作 AI 間的溝通協議，並運用 <strong>Ralph Wiggum Loop（孔安回圈）</strong>：讓 AI 自動測試、產出 log、自我審查自我糾錯，直到專題程式碼完全通過合規性為止。</p>`;
+        } else if (pain === "decision") {
+          reportHTML += `<p><strong>實戰方案：</strong> 參考 <strong>USPACE AI長曾明賢（小海）</strong> 的職涯轉變：懂得用自定義工具解決別人的痛點才值錢。可以朝「AI 流程規劃師」或「AI 代理工程師」發展。理工生更應在大學時期，建立一個「解決身邊每週最繁雜 4 小時工作」的專案（如自動幫室友訂便當、記帳派工系統），這在求職時將會是你的 Unfair Advantage（不公平優勢）。</p>`;
+        } else if (pain === "smarter") {
+          reportHTML += `<p><strong>實戰方案：</strong> 效法 <strong>Jubo 康仕仲教授</strong> 的土木與機器人創業指南：技術 Feasible 不代表好生意。多運用 User-centered Design 走進實際長照、醫療或工廠場景發現問題，將程式包裝成 Marketplace 友善的標準 API（而非自己囤硬體做軟硬整合），利用生態系力量規模化。</p>`;
+        } else {
+          reportHTML += `<p><strong>實戰方案：</strong> 教育部已推出<strong>「館館有 AI」</strong>，包含 47 所國立大學。你可持學生借書證免費在校園圖書館、國立圖書館使用進階付費版 AI 軟體，直接進行大模型的 Pretraining、微調或專題模擬，節省個人訂閱費與算力支出！</p>`;
+        }
+      } 
+      else if (size === "career") {
+        reportHTML += `<h4 class="font-bold text-indigo-400 text-sm mb-2"><i class="fa-solid fa-calculator mr-1"></i> 文商、行銷與管理系專屬建議（Product Taste & BCG 12-70-20）：</h4>`;
+        reportHTML += `<p class="mb-2"><strong>核心心態：</strong> 麥肯錫報告指出，未來有高達七成的行銷工作將被 AI 接管。文商科學生要 walk smarter（更聰明工作），必須實施 <strong>BCG 12-70-20 轉型法則</strong>。轉型不是堆砌 IT 軟體（只佔 20%），高達 70% 的關鍵在於「流程重塑與組織管理」。你必須主動成為引導者 (Steer)，讓 AI 來執行 (Execute)。</p>`;
+        
+        if (pain === "automation") {
+          reportHTML += `<p><strong>實戰方案：</strong> 善用 <strong>Google Notebook LM 與 YouTube to Notebook LM</strong>。將你與團隊開會的錄音、數萬字商業文獻或 YouTube 商業影音一鍵匯入。先用 Google Doc 設定好「核心目的、關鍵決策、待辦事項」等會議紀錄格式，再要求 AI 整理。這能保證 100% 準確，完全避免 AI 幻覺，讓你的小組報告效率提升數倍。</p>`;
+        } else if (pain === "decision") {
+          reportHTML += `<p><strong>實戰方案：</strong> 當寫 Code 的成本降低到趨近於零，Anthropic 產品主管開悟強調：最珍貴的是 <strong>Product Taste（產品品味）</strong>。你要訓練自己能把模糊的商業期待，轉化為可測量的指標。並能專注於「95% 自動化之外的 5% 人類監控與最終產出查核（Human-in-the-loop）」，這才是高薪 PM 與行銷總監的價值。</p>`;
+        } else if (pain === "smarter") {
+          reportHTML += `<p><strong>實戰方案：</strong> 四大會計事務所（KPMG、安永）啟動審計部門大規模調薪 12%、新鮮人起薪普遍調高 2000 元。他們積極留住最懂 AI 自動化的「跨域整合型人才」。若你想用 AI 創業接案，可以主攻 <strong>Agentic Commerce（代理人商務）</strong>：幫中小企業將商品資訊結構化（如 llm.txt 或 Markdown 友善頁面），確保企業在 2026 年高達 90% 的 AI B2B 自動採購決策中不會隱形、被 AI 搜尋到！</p>`;
+        } else {
+          reportHTML += `<p><strong>實戰方案：</strong> 立即免費報名 <strong>Google 台灣「數位人才探索計劃」</strong>！這項計劃針對一般科系學生提供免學費的專業技能認證，包含「AI 職場通識」（Google Workspace 優化、生成式 AI）與「數位行銷學程」（數據分析與 AI 搜尋廣告），到 2026 年 8 月 10 日前均可免費報名上課！</p>`;
+        }
+      } 
+      else { // study / creator
+        reportHTML += `<h4 class="font-bold text-indigo-400 text-sm mb-2"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> 跨領域學習與個人創作者建議（超級工作者 / Superworker）：</h4>`;
+        reportHTML += `<p class="mb-2"><strong>核心心態：</strong> 「一天一 AI」電子報創辦人珊珊（ShanShan）證實：一個人就能靠 AI 產出過去一整個團隊的產量，並在不到半年內累積 3 萬名讀者。核心在於不陷入「純生產力迷思」（不要只是為了發更多報告或影片而用 AI），而是要把 AI 當作負能工具，釋放時間去採集只有人能採集到的深度洞察與人際信任。</p>`;
+        
+        if (pain === "automation") {
+          reportHTML += `<p><strong>實戰方案：</strong> 將你的創作或學習拆解成多個 Sub-agent（子代理人），建立「情境防火牆（Context Firewall）」。將 AI 產出的草稿與圖片彙整到一個 Google Sheet 中（Human-in-the-loop），你在 Sheet 裡進行最終修改與語氣教正，並要求 AI 自我反思與迭代，讓它的 Skill 越來越精準。</p>`;
+        } else if (pain === "decision") {
+          reportHTML += `<p><strong>實戰方案：</strong> 建立你的<strong>「個人說明書」</strong>：在 AI 聊天側邊欄中直接寫入你的思考習慣、基本背景、偏好的回覆方式與風格（例如：不喜歡說教、希望直接講結論、喜歡搞砸的粗糙像素風格等），避免 AI 每次產出都千篇一律。人類獨特的「不完美幽默感與品味美學」才是對抗演算法美學疲勞的最佳武器。</p>`;
+        } else if (pain === "smarter") {
+          reportHTML += `<p><strong>實戰方案：</strong> 珊珊每天僅花 30-60 分鐘就能利用 N8N 與 Make 寫出日更電子報。超級創作者應將省下來的大量時間，投入於「真實世界」。跑實體圖書館翻閱 50 年前的古老書籍（看作者的親筆簽名與留言痕跡），走進展覽、講座，與真實人類進行深刻的交流，採集獨家 Input 才是你的護城河。</p>`;
+        } else {
+          reportHTML += `<p><strong>實戰方案：</strong> 建議直接善用 47 所國立大學的「館館有 AI」免費進階版軟體資源，在國立圖書館使用專屬電腦上網體驗。不論是生圖（Images 2.0）、簡報製作（Cloud for PowerPoint）還是網頁原型，直接在公共空間免費解鎖最頂級的算力與工具！</p>`;
+        }
+      }
+
+      resultDiv.innerHTML = reportHTML;
+      resultDiv.classList.remove("hidden");
+    }
+  </script>
 </body>
 </html>
